@@ -13,8 +13,9 @@ df2 = pd.read_pickle('/mnt/c/DATAscratch/SIPG/ICESpublications.pk')
 # WG
 # Publication type
 # SG
+# 
 
-# Word cloud on abstracts
+# Word cloud
 
 # Altmetric API
 # https://api.altmetric.com/v1/doi/10.1038/480426a
@@ -22,3 +23,4 @@ df2 = pd.read_pickle('/mnt/c/DATAscratch/SIPG/ICESpublications.pk')
 # Some resources for the next steps
 # https://dev.to/dmitryzub/scrape-google-scholar-with-python-32oh
 # https://serpapi.com/blog/web-scraping-with-css-selectors-using-python/
+# https://www.altmetric.com/products/altmetric-api/
