@@ -2,24 +2,29 @@
 import pandas as pd
 import re as re
 
+# TODOS: 
+# Altmetrics counts
+# Citation counts
+
 # Read downloaded data
 articles = pd.read_pickle('/mnt/c/DATAscratch/SIPG/ICESarticles.pk')
 full_articles = pd.read_pickle('/mnt/c/DATAscratch/SIPG/ICESfull_articles.pk')
 custom = pd.read_pickle('/mnt/c/DATAscratch/SIPG/ICEScustom.pk')
+stats = pd.read_pickle('/mnt/c/DATAscratch/SIPG/ICESstats.pk')
+stats.index = stats.index.astype("int64")
 
-# Merge the dataframes so that all the custom fields are visible along with all the other metadata
+# Merge the dataframes so that all the custom fields are visible along with all
+# the other metadata
+# Use left join on articles 
 df = articles
 df = df.merge(custom, how='left', on='id')
-df = df.merge(full_articles, how='inner', on='id')
-'''
-len(df)
-len(full_articles)
-len(custom)
-'''
+df = df.merge(full_articles, how='left', on='id')
+df = df.merge(stats, how='left', on='id')
 
-# Save data to pickle file (I tried to use the to_csv but it failed since
-# there are HTML tags and \n codes in the text that causes the files to
-# be break new lines. Probably an easy fix.
+print(len(articles))
+print(len(custom))
+print(len(full_articles))
+print(len(stats))
 
 
 # Remove HTML and new line characters in fields
@@ -31,8 +36,9 @@ def remove_tags(string):
         result = string
     return result
 
+
 for f in df.columns:
-    df[f] = df[f].apply(lambda cw : remove_tags(cw))
+    df[f] = df[f].apply(lambda cw: remove_tags(cw))
 
 '''
 # Flatten the files dictionary
@@ -47,16 +53,6 @@ files = files.set_index('id')
 '''
 
 df.to_csv('/mnt/c/DATAscratch/SIPG/ICESpublications.csv')
-
-# Add to the df:
-
-# Views
-# Downloads
-# Altmetrics counts
-# Citation counts
-# WG
-# Publication type
-# SG
 
 
 # Word cloud on abstracts

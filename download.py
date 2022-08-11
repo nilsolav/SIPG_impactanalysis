@@ -5,14 +5,14 @@ from tqdm import tqdm
 
 # Set variables
 BASE_URL = "https://api.figshare.com/v2/"
-INST_ID = "989" # I need  ICES code!
-ITEMS = "100" # Needs to match the total number of items/10
+INST_ID = "989" # The ICES code
+ITEMS = "100" # Needs to match the total number of items
 # 5,353 posts
 
 # Gather basic metadata for all items (articles) from the Figshare articles API endpoint
 articles_j = []
 print('\nGet list of items:')
-for i in tqdm(range(1, 53)): # Loop over 10 "pages", with 10 items per page
+for i in tqdm(range(1, 53)): # Loop over 53 "pages", with ITEMS items per page
     urlstr = BASE_URL+"articles?institution="+INST_ID+\
         "&order=published_date&order_direction=desc&page_size="+\
         ITEMS+"0&page={}".format(i)
@@ -58,4 +58,19 @@ custom = pd.json_normalize(
 custom = custom.pivot(index="id", columns="name", values="value")
 custom.to_pickle('/mnt/c/DATAscratch/SIPG/ICEScustom.pk')
 
+# Get use stats
+stats = pd.DataFrame()
+for i, dfi in tqdm(enumerate(articles.id)):
+    dat = {}
+    dat.update({'id': dfi})
+    for ctype in ['views', 'downloads', 'shares']:
+        urlstr = 'https://stats.figshare.com/total/'+ctype+'/article/'+str(dfi)
+        totals = json.loads(requests.get(urlstr).content)['totals']
+        dat.update({ctype: totals})
+    dat_df = pd.DataFrame([dat])
+    stats = pd.concat([stats, dat_df], ignore_index=True)
+print(stats.head())
+stats = stats.set_index('id')
+stats.index = stats.index.astype("int64")
+stats.to_pickle('/mnt/c/DATAscratch/SIPG/ICESstats.pk')
 
