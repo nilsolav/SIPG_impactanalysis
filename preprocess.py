@@ -12,6 +12,7 @@ full_articles = pd.read_pickle('/mnt/c/DATAscratch/SIPG/ICESfull_articles.pk')
 custom = pd.read_pickle('/mnt/c/DATAscratch/SIPG/ICEScustom.pk')
 stats = pd.read_pickle('/mnt/c/DATAscratch/SIPG/ICESstats.pk')
 stats.index = stats.index.astype("int64")
+dimensions = pd.read_pickle('/mnt/c/DATAscratch/SIPG/ICESdimensions.pk')
 
 # Merge the dataframes so that all the custom fields are visible along with all
 # the other metadata
@@ -20,6 +21,7 @@ df = articles
 df = df.merge(custom, how='left', on='id')
 df = df.merge(full_articles, how='left', on='id')
 df = df.merge(stats, how='left', on='id')
+df = df.merge(dimensions, how='left', on='id')
 
 print(len(articles))
 print(len(custom))

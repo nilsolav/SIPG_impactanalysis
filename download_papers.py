@@ -13,7 +13,7 @@ stats = pd.read_pickle('/mnt/c/DATAscratch/SIPG/ICESstats.pk')
 
 
 files = pd.DataFrame([], columns=['id', 'file'])
-for i, _files in tqdm(enumerate(full_articles['files'][9:10])):
+for i, _files in tqdm(enumerate(full_articles['files'])):
     # urlstr = 'https://ices-library.figshare.com/ndownloader/files/'+str(ind)
     if len(_files) > 0:
         for _file in _files:
@@ -27,5 +27,5 @@ for i, _files in tqdm(enumerate(full_articles['files'][9:10])):
                                    columns=['id', 'file'])
             files = pd.concat([files, files_i])
 
-articles.to_pickle('/mnt/c/DATAscratch/SIPG/ICESfiles.pk')
+files.to_pickle('/mnt/c/DATAscratch/SIPG/ICESfiles.pk')
 
