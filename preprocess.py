@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 import pandas as pd
 import re as re
+import json
 
 # TODOS: 
 # Altmetrics counts
-# Citation counts
+# Citation counts (ICES publication)
 
 # Read downloaded data
 articles = pd.read_pickle('/mnt/c/DATAscratch/SIPG/ICESarticles.pk')
@@ -41,6 +42,19 @@ def remove_tags(string):
 
 for f in df.columns:
     df[f] = df[f].apply(lambda cw: remove_tags(cw))
+
+# Expand timeline
+timeline = pd.DataFrame()
+timeline_raw = df['timeline_y']
+for i, _date in enumerate(timeline_raw):
+    #ids = json.loads(df['timeline_y'].iloc[i].replace("'", "\""))
+    #ids = json.loads(_date.replace("'", "\""))
+    ids = _date
+    _timeline = pd.DataFrame.from_dict(ids, orient='index').transpose()
+    _timeline['id'] = df['id'][i]
+    timeline = pd.concat([timeline, _timeline], ignore_index = True)
+df = df.merge(timeline, how='left', on='id')
+
 
 '''
 # Flatten the files dictionary
