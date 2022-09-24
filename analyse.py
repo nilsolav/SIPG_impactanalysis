@@ -28,14 +28,21 @@ plt.savefig('/mnt/c/DATAscratch/SIPG/ICESdownloads_WG.png')
 plt.close()
 
 # Citations by expert groupby
-downloads_wg = df.groupby([wg])['times_cited'].sum().sort_values(ascending=False)
-print(downloads_wg[0:10])
-downloads_wg[0:10].plot.barh().invert_yaxis()
+times_cited_wg = df.groupby([wg])['times_cited'].sum().sort_values(ascending=False)
+print(times_cited_wg[0:20])
+times_cited_wg[0:10].plot.barh().invert_yaxis()
 plt.xlabel('Citations by WG')
 plt.savefig('/mnt/c/DATAscratch/SIPG/ICEScitations_WG.png')
 plt.close()
 
-
+# list(df.columns)
+# Recent_citations by wg
+recent_citations_wg = df.groupby([wg])['recent_citations'].sum().sort_values(ascending=False)
+print(recent_citations_wg[0:10])
+downloads_wg[0:10].plot.barh().invert_yaxis()
+plt.xlabel('Recent Citations by WG')
+plt.savefig('/mnt/c/DATAscratch/SIPG/ICESrecent_citations_WG.png')
+plt.close()
 
 # Average download by expert groupby
 mean_downloads_wg = df.groupby([wg])['downloads'].mean().sort_values(ascending=False)
@@ -43,6 +50,14 @@ print(mean_downloads_wg[0:10])
 mean_downloads_wg[0:10].plot.barh().invert_yaxis()
 plt.xlabel('Average download by WG')
 plt.savefig('/mnt/c/DATAscratch/SIPG/ICESmean_downloads_WG.png')
+plt.close()
+
+# Relative_citation_ratio
+relative_citation_ratio = df.groupby([wg])['relative_citation_ratio'].mean().sort_values(ascending=False)
+print(relative_citation_ratio[0:10])
+mean_downloads_wg[0:10].plot.barh().invert_yaxis()
+plt.xlabel('Relative citation ratio')
+plt.savefig('/mnt/c/DATAscratch/SIPG/ICESmean_relative_citaion_ratio_WG.png')
 plt.close()
 
 # Download by series 
