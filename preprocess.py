@@ -55,21 +55,21 @@ for i, _date in enumerate(timeline_raw):
     timeline = pd.concat([timeline, _timeline], ignore_index = True)
 df = df.merge(timeline, how='left', on='id')
 
+# Extract the individual files
+files = pd.DataFrame([], columns=['id', 'file'])
+for i, _files in enumerate(df['files']):
+    # urlstr = 'https://ices-library.figshare.com/ndownloader/files/'+str(ind)
+    if isinstance(_files, list):
+        __files = pd.DataFrame.from_dict(_files)
+        if len(__files) > 0:
+            __files['id_file'] = __files['id']
+            __files['id'] = df['id'][i]
+            files = pd.concat([files, __files], ignore_index = True)
 
-'''
-# Flatten the files dictionary
-files = pd.DataFrame()
-for it in full_articles.files:
-    try:
-        files = files.append(it[0], ignore_index=True, sort=False)
-    except:
-        print('Failed')
- Set Id as index
-files = files.set_index('id')
-'''
 
 df.to_csv('/mnt/c/DATAscratch/SIPG/ICESpublications.csv')
-
+df.to_pickle('/mnt/c/DATAscratch/SIPG/ICESpublicaitons.pk')
+df.to_pickle('/mnt/c/DATAscratch/SIPG/ICESfiles.pk')
 
 # Word cloud on abstracts
 
