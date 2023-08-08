@@ -4,6 +4,11 @@ import pandas as pd
 matplotlib.use('Agg')
 from mpl_toolkits.axes_grid1.axes_divider import make_axes_area_auto_adjustable
 
+# Some resources for the next steps
+# https://dev.to/dmitryzub/scrape-google-scholar-with-python-32oh
+# https://serpapi.com/blog/web-scraping-with-css-selectors-using-python/
+
+
 # Import preprocessed data
 df = pd.read_csv('/mnt/c/DATAscratch/SIPG/ICESpublications.csv')
 

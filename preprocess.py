@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import pandas as pd
 import re as re
-import json
 
 # TODOS: 
 # Altmetrics counts
@@ -47,12 +46,11 @@ for f in df.columns:
 timeline = pd.DataFrame()
 timeline_raw = df['timeline_y']
 for i, _date in enumerate(timeline_raw):
-    #ids = json.loads(df['timeline_y'].iloc[i].replace("'", "\""))
-    #ids = json.loads(_date.replace("'", "\""))
-    ids = _date
-    _timeline = pd.DataFrame.from_dict(ids, orient='index').transpose()
-    _timeline['id'] = df['id'][i]
-    timeline = pd.concat([timeline, _timeline], ignore_index = True)
+    if (type(_date) is dict):
+        ids = _date
+        _timeline = pd.DataFrame.from_dict(ids, orient='index').transpose()
+        _timeline['id'] = df['id'][i]
+        timeline = pd.concat([timeline, _timeline], ignore_index = True)
 df = df.merge(timeline, how='left', on='id')
 
 # Extract the individual files
@@ -61,21 +59,15 @@ for i, _files in enumerate(df['files']):
     # urlstr = 'https://ices-library.figshare.com/ndownloader/files/'+str(ind)
     if isinstance(_files, list):
         __files = pd.DataFrame.from_dict(_files)
+        #__files = pd.DataFrame([_files])
+
         if len(__files) > 0:
             __files['id_file'] = __files['id']
             __files['id'] = df['id'][i]
+            # https://github.com/pandas-dev/pandas/issues/46662
+            __files['is_link_only'] = __files['is_link_only'].astype("boolean")
             files = pd.concat([files, __files], ignore_index = True)
-
 
 df.to_csv('/mnt/c/DATAscratch/SIPG/ICESpublications.csv')
 df.to_pickle('/mnt/c/DATAscratch/SIPG/ICESpublicaitons.pk')
-df.to_pickle('/mnt/c/DATAscratch/SIPG/ICESfiles.pk')
-
-# Word cloud on abstracts
-
-# Altmetric API
-# https://api.altmetric.com/v1/doi/10.1038/480426a
-
-# Some resources for the next steps
-# https://dev.to/dmitryzub/scrape-google-scholar-with-python-32oh
-# https://serpapi.com/blog/web-scraping-with-css-selectors-using-python/
+files.to_pickle('/mnt/c/DATAscratch/SIPG/ICESfiles.pk')
