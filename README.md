@@ -17,7 +17,7 @@ Create figures and metadata counts from the `ICESpublications.csv`.
 Reads the `ICESfiles.pk` and download the full text articles and store the pdfs in the `/pdf/` directory.
 
 ## ICESwordcloud.py
-Extract the text from the pdf's.
+Extract the text from the pdf's and store extracted text to individual pickle files in the `/pdf/` directory.
 
 ## ICES wordcloud_2.py
 Generate the word clouds based on the extracted texts.

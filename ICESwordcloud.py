@@ -75,12 +75,18 @@ data = pd.DataFrame([], columns=['id_file', 'keywords'])
 files = pd.read_pickle('/mnt/c/DATAscratch/SIPG/ICESfiles.pk')
 
 # Process files
-for i, _file in enumerate(files['id_file'][0:1]):
+for i, _file in enumerate(files['id_file']):
     pdffile = '/mnt/c/DATAscratch/SIPG/pdf/'+str(int(_file))+'.pdf'
     # Test if file exists
-    if os.path.exists(pdffile):
+    if os.path.exists(pdffile) & (not os.path.exists(pdffile+'.pk')):
         print(pdffile)
-        keywords = extracttext(pdffile)
-        _data = {'id_file': int(_file), 'keywords': keywords}
-        __data = pd.DataFrame.from_dict(_data)
-        data = pd.concat([data, __data], ignore_index = True)
+        try:
+            keywords = extracttext(pdffile)
+            _data = {'id_file': int(_file), 'keywords': keywords}
+            __data = pd.DataFrame.from_dict(_data)
+            __data.to_pickle(pdffile+'.pk')
+            #data = pd.concat([data, __data], ignore_index = True)
+        except:
+            print('Failed reading')
+
+

@@ -98,3 +98,11 @@ make_axes_area_auto_adjustable(plt.gca())
 plt.xlabel('Mean download by series')
 plt.savefig('/mnt/c/DATAscratch/SIPG/ICESmean_downloads_series.png')
 plt.close()
+
+
+# item by years
+years = pd.to_datetime(df['publisherPublication'].dropna()).dt.year.astype(int)
+ax = years.value_counts().sort_index().plot(kind='line')
+ax.set_xticks(ticks=range(1890, 2030, 10))
+plt.savefig('/mnt/c/DATAscratch/SIPG/ICESmean_dates.png')
+plt.close()

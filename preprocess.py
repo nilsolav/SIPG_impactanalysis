@@ -69,5 +69,5 @@ for i, _files in enumerate(df['files']):
             files = pd.concat([files, __files], ignore_index = True)
 
 df.to_csv('/mnt/c/DATAscratch/SIPG/ICESpublications.csv')
-df.to_pickle('/mnt/c/DATAscratch/SIPG/ICESpublicaitons.pk')
+df.to_pickle('/mnt/c/DATAscratch/SIPG/ICESpublications.pk')
 files.to_pickle('/mnt/c/DATAscratch/SIPG/ICESfiles.pk')
