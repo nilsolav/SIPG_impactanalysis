@@ -22,4 +22,7 @@ Extract the text from the pdf's and store extracted text to individual pickle fi
 ## ICES wordcloud_2.py
 Generate the word clouds based on the extracted texts.
 
+## ICESbuzzwordsearch.py
+Search for specific keywords from the text that is extracted by the `ICESwordcloud.py`.
+
 
